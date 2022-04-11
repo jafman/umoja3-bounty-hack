@@ -7,21 +7,25 @@ export const main = Reach.App(() => {
   const A = Participant('Creator', {
     // Creator gives the target amount for the campaign
     getTarget: Fun([], UInt),
+
     // Creator is shown how much donation have be made
     showDonation: Fun([UInt], Null),
   });
+
   const B = Participant('Donor', {
     // Donor is shown expected target for the campaign
     showTarget: Fun([UInt], Null),
+
     // The donor tells the contract how much he is willing to donate
     getDonation: Fun([], UInt),
   });
+
   init();
 
   A.only(() => {
     const targetAmount = declassify(interact.getTarget());
-    //const [donatedCkn, donatedEgg] = declassify(interact.getDonation());
   });
+
   A.publish(targetAmount);
   commit();
 
@@ -29,6 +33,7 @@ export const main = Reach.App(() => {
   B.interact.showTarget(targetAmount);
   B.publish();
   commit();
+  
   // The donor shows the contract the amount he is willing to donate
   B.only(() => {
     const donationAmount = declassify(interact.getDonation());
