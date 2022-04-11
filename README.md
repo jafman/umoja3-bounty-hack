@@ -18,3 +18,12 @@ This is the owner / creator of the campaign
 
 2. Donora
 These are interested donors willing to contribute to the fund
+
+
+### TESTING
+
+Run Command 
+
+```
+./ reach run
+```
