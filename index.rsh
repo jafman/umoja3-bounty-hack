@@ -1,25 +1,52 @@
 'reach 0.1';
+'use strict';
 
 export const main = Reach.App(() => {
-  const A = Participant('Admin', {
-    // Admin is meant to deploy the contract while other participants attach to it
+
+  // Campaign Creator
+  const A = Participant('Creator', {
+    // Creator gives the target amount for the campaign
+    getTarget: Fun([], UInt),
+    // Creator is shown how much donation have be made
+    showDonation: Fun(UInt, Null),
   });
-  const B = Participant('CampaignOwner', {
-    // Specify interact interface for a campaign creator
-  });
-  const C = Participant('Contributor', {
-    // Specify interact interface for a contributor
+  const B = Participant('Donor', {
+    // Donor is shown expected target for the campaign
+    showTarget: Fun([UInt], Null),
+    // The donor tells the contract how much he is willing to donate
+    getDonation: Fun([], UInt),
   });
   init();
-  // The first one to publish deploys the contract
-  A.publish();
+
+  A.only(() => {
+    const [targetAmount] = declassify(interact.getTarget());
+    //const [donatedCkn, donatedEgg] = declassify(interact.getDonation());
+  });
+  A.publish(targetAmount);
   commit();
-  // The second one to publish always attaches
+
+  // Show the target amount to the donor
+  B.interact.showTarget(targetAmount);
   B.publish();
+
+  // The donor shows the contract the amount he is willing to donate
+  B.only(() => {
+    const [donationAmount] = declassify(interact.getDonation());
+  });
+  B.publish(donationAmount);
   commit();
-  // The  last to publish also attaches
-  C.publish();
+
+  // make Donor Pay 
+  A.pay(donationAmount);
   commit();
-  // write your program here
+
+  // Get Total Donation
+  A.interact.showDonation(donationAmount);
+  A.publish();
+
+  // Transfer fund to Creator
+  transfer(donationAmount).to(A);
+  commit();
+
   exit();
 });
