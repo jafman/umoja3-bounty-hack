@@ -3,3 +3,4 @@ nodemodules
 .reach
 build
 old
+.vscode
