@@ -6,58 +6,40 @@ const stdlib = loadStdlib();
 // Make accounts
 const startingBalance = stdlib.parseCurrency(100);
 const [ accCreator, accDonor ] =
-  await stdlib.newTestAccounts(3, startingBalance);
-
-// Create tokens make Alice and Bob's accounts accept them
-const chicken = await stdlib.launchToken(accCreator, "chicken", "CKN");
-const egg = await stdlib.launchToken(accCreator, "egg", "EGG");
-await accAlice.tokenAccept(chicken.id);
-await accAlice.tokenAccept(egg.id);
-await accBob.tokenAccept(chicken.id);
-await accBob.tokenAccept(egg.id);
-
-// Give Alice some CKN and EGG tokens
-const aliceStartingCkn = stdlib.parseCurrency(200);
-const aliceStartingEgg = stdlib.parseCurrency(300);
-await chicken.mint(accAlice, aliceStartingCkn);
-await egg.mint(accAlice, aliceStartingEgg);
+  await stdlib.newTestAccounts(2, startingBalance);
 
 const fmt = (x) => stdlib.formatCurrency(x, 4);
-const doDonation = async (donatedCkn, donatedEgg) => {
-  const balancesMessage = async (account) => {
-    const [nwt, ckn, egg_] = await stdlib.balancesOf(account, [null, chicken.id, egg.id]);
-    return `${fmt(nwt)} ${stdlib.standardUnit}, ${fmt(ckn)} CKN, ${fmt(egg_)} EGG`;
-  };
+
+// Create a campaign and donate to the course
+const createCampaign = async (targetAmount, donationAmount) => {
 
   console.log('\n');
-  console.log(`Alice has ${await balancesMessage(accAlice)}`);
-  console.log(`  Bob has ${await balancesMessage(accBob)}`);
 
-  // Alice launches the donation contract, and Bob joins
-  const ctcAlice = accAlice.contract(backend);
-  const ctcBob = accBob.contract(backend, ctcAlice.getInfo());
+  // The Creator launches the fundme contract, and a Donor joins
+  const ctcCreator = accCreator.contract(backend);
+  const ctcDonor = accDonor.contract(backend, ctcCreator.getInfo());
 
-  // Alice and Bob provide frontend interfaces so the contract can take place
+  // Creator and Donor provides frontend interfaces so the contract can take place
   await Promise.all([
-    backend.Alice(ctcAlice, {
-      getTokenIds: () => { return [chicken.id, egg.id]; },
-      getDonation: () => {
-        console.log(`Alice wants to donate ${fmt(donatedCkn)} CKN and ${fmt(donatedEgg)} EGG`);
-        return [donatedCkn, donatedEgg];
+    backend.Creator(ctcCreator, {
+      getTarget: () => { 
+        return [targetAmount]; 
+      },
+      showDonation: (amount) => {
+        console.log(`Creator as realised ${fmt(amount)} ${stdlib.standardUnit} out of ${fmt(targetAmount)} ${stdlib.standardUnit} for this campaign.`);
       },
     }),
 
-    backend.Bob(ctcBob, {
-      showDonation: (recvCkn, recvEgg) => {
-        console.log(`Bob sees that he will receive ${fmt(recvCkn)} CKN and ${fmt(recvEgg)} EGG`);
+    backend.Donor(ctcDonor, {
+      showTarget: (amount) => {
+        console.log(`Creator wants fund worth ${fmt(amount)} ${stdlib.standardUnit} for this campaign.`);
+      },
+      getDonation: () => {
+        console.log(`Donor wants to donate ${fmt(donationAmount)} ${stdlib.standardUnit}`);
+        return [donationAmount];
       }
     }),
   ]);
-
-  console.log(`Alice now has ${await balancesMessage(accAlice)}`);
-  console.log(`  Bob now has ${await balancesMessage(accBob)}`);
 };
 
-await doDonation(stdlib.parseCurrency(1), stdlib.parseCurrency(2));
-await doDonation(stdlib.parseCurrency(5), stdlib.parseCurrency(10));
-await doDonation(stdlib.parseCurrency(100), stdlib.parseCurrency(200));
+await createCampaign(stdlib.parseCurrency(50), stdlib.parseCurrency(22));
