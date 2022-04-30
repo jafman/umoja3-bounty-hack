@@ -2,6 +2,7 @@ import './App.css';
 import Home from './views/Home'
 import CampaignWrapper from './views/CampaignWrapper';
 import CampaignDetails from './views/CampaignDetails';
+import CreateCampaign from './views/CreateCampaign';
 import {
   BrowserRouter,
   Routes,
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<Home />}/>
         <Route path="/campaign" element={<CampaignWrapper/>}>
           <Route path=":campaignId" element={<CampaignDetails />} />
+          <Route path="new" element={<CreateCampaign />} />
         </Route>
       </Routes>
     </BrowserRouter>

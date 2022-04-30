@@ -16,7 +16,7 @@ function Campaign(props) {
             <div className="progress-bar progress-success" role="progressbar" style={{width: percentage}}></div>
           </div>
           <h6>{props.donated} out of {props.total} ALGO raised</h6>
-          <a href={href} className="btn btn-success" target="_blank" >Donate</a>
+          <a href={href} className="btn btn-success" target="_blank" rel="noreferrer">Donate</a>
         </div>
       </div>
     </div>

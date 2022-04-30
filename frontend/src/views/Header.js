@@ -1,14 +1,17 @@
+import { Link } from 'react-router-dom';
 
 function Header() {
   return (
       <nav className="navbar shadow">
         <div className="container-fluid">
-          <a id="logo" className="navbar-brand" href="#">
+          <Link to="/" id="logo" className="navbar-brand">
             W3FUND
-          </a>
+          </Link>
           <ul>
             <li>How it works</li>
-            <li><button type="button" className="btn btn-success">Start a Campaign</button></li>
+            <li>
+              <Link to="/campaign/new"><button type="button" className="btn btn-success">Start a Campaign</button></Link>
+            </li>
           </ul>
         </div>
       </nav>

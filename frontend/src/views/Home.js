@@ -2,6 +2,7 @@ import coin from '../assets/coin.png'
 import Header from './Header'
 import Footer from './Footer';
 import Campaign from './components/campaign';
+import { Link } from 'react-router-dom';
 function Home() {
   return (
     <div className="Landing">
@@ -14,7 +15,9 @@ function Home() {
               for a Project, Business, or Cause <br/>
               using Crypto Currency.
             </h2>
-            <button type="button" className="btn btn-lg btn-success">Start a Campaign</button>
+            <Link to="/campaign/new">
+              <button type="button" className="btn btn-lg btn-success">Start a Campaign</button>
+            </Link> 
           </div>
           <div className='right'>
             <img height='300px' src={coin} />
