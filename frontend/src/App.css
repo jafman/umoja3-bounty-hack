@@ -1,5 +1,10 @@
-.App {
+/*.App {
   text-align: center;
+}
+*/
+
+body{
+  font-family: 'Ubuntu', sans-serif;
 }
 
 .App-logo {
@@ -35,4 +40,79 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+nav li {
+  display: inline-block;
+  margin: 10px 10px;
+  margin-bottom: 0px;
+  list-style-type: none;
+}
+
+.btn-success {
+  background-color: #25C266;
+  border-color: #25C266;
+}
+
+#logo {
+  color: #25C266;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.top-banner{
+  box-sizing: border-box;
+  display: flex;
+}
+
+.top-wrapper {
+  background-color: #F8F9FE;
+  box-sizing: border-box;
+  margin-bottom: 30px;
+  padding-bottom: 50px;
+}
+
+.top-banner div.right {
+  width: 40%;
+}
+
+.top-banner div.left {
+  padding-top: 50px;
+  width: 60%;
+}
+
+.top-banner h2{
+  font-weight: bolder;
+  margin-bottom: 40px;
+}
+
+.card{
+  width: 90%;
+}
+
+.progress{
+  border-radius: 20px;
+  height: 5px;
+  margin-bottom: 10px;
+}
+
+.progress-success{
+  background-color: #25C266;
+}
+
+footer {
+  align-items: center;
+  background-color: black;
+  color: white;
+  display: flex;
+  height: 150px;
+  justify-content: center;
+}
+
+.body{
+  margin-bottom: 50px;
+}
+
+.campaign {
+  margin-bottom: 50px;
 }
