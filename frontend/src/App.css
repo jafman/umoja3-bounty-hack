@@ -116,3 +116,22 @@ footer {
 .campaign {
   margin-bottom: 50px;
 }
+
+.campaign_body img{
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.campaign_body p{
+  width: 90%;
+}
+
+.campaign_body h3{
+  margin-bottom: 15px;
+  margin-top: 40px;
+}
+
+.padded-card{
+  padding-bottom: 50px;
+  padding-top: 50px;
+}
