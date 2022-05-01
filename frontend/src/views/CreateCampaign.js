@@ -1,23 +1,29 @@
 import { useState } from 'react';
 import { submitCampaign } from '../utils/db';
 function CreateCampaign(){
-  let [ title, setTitle ] = useState('');
-  let [ description, setDescription ] = useState('');
-  let [ amount, setAmount ] = useState('');
-  let [ deadline, setDeadline ] = useState('');
-  let [ processing, setProcessing ] = useState(false);
+  const [ title, setTitle ] = useState('');
+  const [ description, setDescription ] = useState('');
+  const [ amount, setAmount ] = useState('');
+  const [ deadline, setDeadline ] = useState('');
+  const [ processing, setProcessing ] = useState(false);
+  const [ success, setSuccess ] = useState(false);
+  const [ error, setError ] = useState(false);
 
   async function handleSubmit(e){
     e.preventDefault();
     setProcessing(true);
+    setError(false);
+    setSuccess(false);
     console.log('Submitting...', title, description, amount, deadline);
     const creator = 'Jafman Kamz';
     const campaignCreated = await submitCampaign(title, description, amount, deadline, creator);
     setProcessing(false);
     if(campaignCreated){
-      alert('Campaign Created Successfully');
+      setSuccess(true);
+      setError(false);
     } else {
-      alert('Error creating campaign!');
+      setError(true);
+      setSuccess(false);
     } 
     resetForm();
   }
@@ -47,6 +53,23 @@ function CreateCampaign(){
 
   return (
     <div className="newCampaignWrapper">
+
+      { success && 
+        <div className="alert alert-success" role="alert">
+          <div>
+            Campaign Created Successfully.
+          </div>
+        </div>
+      }
+
+      { error && 
+        <div className="alert alert-danger" role="alert">
+          <div>
+            Error creating campaign, try again!
+          </div>
+        </div>
+      }
+
       <h3>Create a Campaign</h3>
       <hr/>
       <form className="campaign_form" onSubmit={handleSubmit}>
