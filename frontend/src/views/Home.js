@@ -3,7 +3,19 @@ import Header from './Header'
 import Footer from './Footer';
 import Campaign from './components/campaign';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { getCampaigns } from '../utils/db';
+
 function Home() {
+  const [campaigns, setCampaigns] = useState([]);
+
+  useEffect(() => {
+    getCampaigns().then(campaigns => {
+      setCampaigns(campaigns);
+      //console.log(campaigns);
+    });
+  }, []);
+
   return (
     <div className="Landing">
       <Header/>
@@ -28,16 +40,12 @@ function Home() {
       <div className="body container">
         <h4>Latest Campaigns</h4>
         <div className="row">
-          <Campaign title="Campaign One" donated="10" total="50"
-            body="Some quick example text to build on the card title and make up the bulk of the card's content" />
-          <Campaign title="Campaign One" donated="230" total="500"
-            body="Some quick example text to build on the card title and make up the bulk of the card's content" />
-          <Campaign title="Campaign One" donated="90" total="150"
-            body="Some quick example text to build on the card title and make up the bulk of the card's content" />
-          <Campaign title="Campaign One" donated="2" total="10"
-            body="Some quick example text to build on the card title and make up the bulk of the card's content" />
-          <Campaign title="Campaign One" donated="120" total="100"
-            body="Some quick example text to build on the card title and make up the bulk of the card's content" />
+          { campaigns.map( (campaign) => (
+            <Campaign key={campaign.id} id={campaign.id} title={campaign.title} donated={campaign.donated} total={campaign.amount}
+            body={campaign.description} img_url={campaign.img_url} />
+            ))
+          }
+
         </div>
       </div>
       <Footer/>

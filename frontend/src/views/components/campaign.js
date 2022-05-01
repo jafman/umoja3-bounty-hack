@@ -2,13 +2,11 @@ import { Link } from "react-router-dom";
 
 function Campaign(props) {
   const percentage = Number(props.donated)/Number(props.total) * 100 +'%';
-  const rnd = Math.floor(Math.random()*500)+1;
-  const imgSrc = "https://picsum.photos/300/150?x="+rnd;
-  const href = '/campaign/' + rnd;
+  const href = '/campaign/' + props.id;
   return (
     <div className="col-sm-4 campaign">
       <div className="card shadow-sm">
-        <img src={imgSrc} className="card-img-top" alt="..."/>
+        <img src={props.img_url} className="card-img-top" alt="..."/>
         <div className="card-body">
           <h5 className="card-title">{props.title}</h5>
           <p className="card-text">{props.body}</p>

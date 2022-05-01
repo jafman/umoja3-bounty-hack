@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import submitCampaign from '../utils/submitCampaign';
+import { submitCampaign } from '../utils/db';
 function CreateCampaign(){
   let [ title, setTitle ] = useState('');
   let [ description, setDescription ] = useState('');
