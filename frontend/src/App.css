@@ -1,0 +1,152 @@
+/*.App {
+  text-align: center;
+}
+*/
+
+body{
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+nav li {
+  display: inline-block;
+  margin: 10px 10px;
+  margin-bottom: 0px;
+  list-style-type: none;
+}
+
+.btn-success {
+  background-color: #25C266;
+  border-color: #25C266;
+}
+
+#logo {
+  color: #25C266;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.top-banner{
+  box-sizing: border-box;
+  display: flex;
+}
+
+.top-wrapper {
+  background-color: #F8F9FE;
+  box-sizing: border-box;
+  margin-bottom: 30px;
+  padding-bottom: 50px;
+}
+
+.top-banner div.right {
+  width: 40%;
+}
+
+.top-banner div.left {
+  padding-top: 50px;
+  width: 60%;
+}
+
+.top-banner h2{
+  font-weight: bolder;
+  margin-bottom: 40px;
+}
+
+.card{
+  width: 90%;
+}
+
+.progress{
+  border-radius: 20px;
+  height: 5px;
+  margin-bottom: 10px;
+}
+
+.progress-success{
+  background-color: #25C266;
+}
+
+footer {
+  align-items: center;
+  background-color: black;
+  color: white;
+  display: flex;
+  height: 150px;
+  justify-content: center;
+}
+
+.body{
+  margin-bottom: 50px;
+}
+
+.campaign {
+  margin-bottom: 50px;
+}
+
+.campaign_body img{
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.campaign_body p{
+  width: 90%;
+}
+
+.campaign_body h3{
+  margin-bottom: 15px;
+  margin-top: 40px;
+}
+
+.padded-card{
+  padding-bottom: 50px;
+  padding-top: 50px;
+}
+
+.campaign_form{
+}
+
+.newCampaignWrapper{
+  margin: auto;
+  margin-bottom: 100px;
+  margin-top: 50px;
+  width: 50%;
+}
+
+.spinner-border {
+  color: #25C266;
+  margin-left: 20px;
+}
