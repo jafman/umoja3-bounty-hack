@@ -5,19 +5,28 @@ function CreateCampaign(){
   let [ description, setDescription ] = useState('');
   let [ amount, setAmount ] = useState('');
   let [ deadline, setDeadline ] = useState('');
+  let [ processing, setProcessing ] = useState(false);
 
   async function handleSubmit(e){
     e.preventDefault();
+    setProcessing(true);
     console.log('Submitting...', title, description, amount, deadline);
-    //alert('Form has been submitted!');
     const creator = 'Jafman Kamz';
     const campaignCreated = await submitCampaign(title, description, amount, deadline, creator);
+    setProcessing(false);
     if(campaignCreated){
       alert('Campaign Created Successfully');
     } else {
       alert('Error creating campaign!');
-    }
-    
+    } 
+    resetForm();
+  }
+
+  function resetForm(){
+    setTitle('');
+    setDescription('');
+    setAmount('');
+    setDeadline('');
   }
 
   function updateTitle(e){
@@ -43,26 +52,34 @@ function CreateCampaign(){
       <form className="campaign_form" onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="camp_title" className="form-label">Campaign Title</label>
-          <input type="text" className="form-control" id="camp_title" value={title} required onChange={updateTitle} />
+          <input type="text" className="form-control" id="camp_title" value={title} required onChange={updateTitle} disabled={processing} />
         </div>
 
         <div className="mb-3">
           <label htmlFor="description" className="form-label">Description</label>
-        <textarea style={{height: "100px"}} className="form-control" id="description" required value={description} onChange={updateDescription} />
+        <textarea style={{height: "100px"}} className="form-control" id="description" required value={description} onChange={updateDescription} disabled={processing} />
         </div>
 
         <div className="mb-3">
           <label htmlFor="amount" className="form-label">Amount</label>
-          <input type="number" className="form-control" id="amount" required value={amount} onChange={updateAmount} />
+          <input type="number" className="form-control" id="amount" required value={amount} onChange={updateAmount} disabled={processing} />
           <div id="amountHelp" className="form-text">Amount in ALGO.</div>
         </div>
 
         <div className="mb-3">
           <label htmlFor="deadline" className="form-label">Deadline</label>
-          <input type="date" className="form-control" id="deadline" required value={deadline} onChange={updateDeadline} />
+          <input type="date" className="form-control" id="deadline" required value={deadline} onChange={updateDeadline} disabled={processing} />
         </div>
 
-        <button type="submit" className="btn btn-success">Submit</button>
+        <button type="submit" className="btn btn-success" disabled={processing}>Submit</button>
+
+        { processing && 
+          <div className="spinner-border spinner-border-sm" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        }
+        
+
       </form>
     </div>
     

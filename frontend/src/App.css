@@ -145,3 +145,8 @@ footer {
   margin-top: 50px;
   width: 50%;
 }
+
+.spinner-border {
+  color: #25C266;
+  margin-left: 20px;
+}
