@@ -6,10 +6,34 @@ import LazyLoadCampaign from './components/campaign_lazy';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getCampaigns } from '../utils/db';
+import { loadStdlib } from '@reach-sh/stdlib';
+import { ALGO_MyAlgoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
+
+const reach = loadStdlib('ALGO');
+reach.setWalletFallback(reach.walletFallback( { providerEnv: 'TestNet', MyAlgoConnect } ));
 
 function Home() {
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [ account, setAccount ] = useState({});
+  const [ address, setAddress ] = useState('');
+
+  const getAcc = async () => {
+    try {
+      const accountObj = await reach.getDefaultAccount();
+      console.log('ACCOUNT IS:', reach.formatAddress(accountObj))
+      setAccount(accountObj);
+      setAddress(reach.formatAddress(accountObj))
+    } catch (e) {
+      alert('Error getting account:', e)
+    }
+    
+  }
+
+  const showAcc = () => {
+    console.log('ACCUNT:', reach.formatAddress(account));
+    alert('ACC ADD:' + address);
+  }
 
   useEffect(() => {
     getCampaigns().then(campaigns => {
@@ -38,6 +62,12 @@ function Home() {
             <img height='300px' src={coin} />
           </div>
         </div>
+      </div>
+
+      <div>
+        <button className="btn btn-lg btn-success" onClick={getAcc}>Connect Wallet</button>
+        <button className="btn btn-lg btn-success" onClick={showAcc}>Show Account</button>
+        
       </div>
 
       <div className="body container">
