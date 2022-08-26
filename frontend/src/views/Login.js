@@ -1,6 +1,7 @@
+import { useContext } from 'react';
+import { AccountContext } from '../context/account-context';
 import hammer from '../assets/hammer.png';
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import logo from '../assets/logo.png';
 import { loadStdlib } from '@reach-sh/stdlib';
 import { ALGO_MyAlgoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
@@ -9,15 +10,14 @@ const reach = loadStdlib('ALGO');
 reach.setWalletFallback(reach.walletFallback( { providerEnv: 'TestNet', MyAlgoConnect } ));
 
 function Login() {
-  const [ account, setAccount ] = useState({});
-  const [ address, setAddress ] = useState('');
+  const { account, address, handleAccountChange, handleAddressChange } = useContext(AccountContext);
 
   const connetWallet = async () => {
     try {
       const accountObj = await reach.getDefaultAccount();
       console.log('ACCOUNT IS:', reach.formatAddress(accountObj))
-      setAccount(accountObj);
-      setAddress(reach.formatAddress(accountObj))
+      handleAccountChange(accountObj);
+      handleAddressChange(reach.formatAddress(accountObj));
     } catch (e) {
       alert('Error getting account:', e)
     }
