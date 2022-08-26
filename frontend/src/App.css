@@ -50,12 +50,16 @@ nav li {
 }
 
 .btn-success {
-  background-color: #25C266;
-  border-color: #25C266;
+  background-color: #161E81;
+  border-color: #161E81;
+}
+
+.btn-success:hover {
+  background-color: #161E81;
 }
 
 #logo {
-  color: #25C266;
+  color: #161E81;
   font-size: 24px;
   font-weight: bold;
 }
@@ -63,22 +67,24 @@ nav li {
 .top-banner{
   box-sizing: border-box;
   display: flex;
+  margin-top: 100px;
 }
 
 .top-wrapper {
-  background-color: #F8F9FE;
+  background-color: #FFFBF7;
   box-sizing: border-box;
   margin-bottom: 30px;
   padding-bottom: 50px;
 }
 
 .top-banner div.right {
-  width: 40%;
+  padding-top: -10px;
+  width: 60%;
 }
 
 .top-banner div.left {
-  padding-top: 50px;
-  width: 60%;
+  padding-top: 100px;
+  width: 40%;
 }
 
 .top-banner h2{
@@ -149,4 +155,87 @@ footer {
 .spinner-border {
   color: #25C266;
   margin-left: 20px;
+}
+
+a {
+  color: #282c34;
+  text-decoration: none;
+}
+
+nav {
+  background-color: rgba(0,0,0,0);
+}
+
+.landing {
+  background-color: #FFFBF7;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.circle {
+  background-color: #FFD422;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.circle-lg {
+  height: 600px;
+  width: 600px;
+}
+
+.circle-sm {
+  height: 60px;
+  width: 60px;
+}
+
+.circle-home {
+  top: -100px;
+  right: -100px;
+}
+
+.circle-login-left {
+  top: 300px;
+  left: 100px;
+}
+
+.circle-login-top {
+  height: 40vw;
+  width: 40vw;
+  top: -65%;
+  left: 30vw;
+}
+
+.home.right {
+  z-index: 1001;
+}
+
+.logo-login {
+  margin-top: 200px;
+  text-align: center;
+}
+
+.login-modal {
+  align-items: center;
+  background-color: #fff;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+  margin: auto;
+  margin-top: 50px;
+  width: 300px;
+  text-align: center;
+}
+
+.block {
+  display: block;
+}
+
+img.hammer {
+  margin-top: 30px;
+}
+
+span.welcome {
+  font-size: 18px;
+  margin-top: 20px;
 }
