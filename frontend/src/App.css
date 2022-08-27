@@ -101,6 +101,10 @@ nav li {
   width: 90%;
 }
 
+.card.bid {
+  height: 350px;
+}
+
 .progress{
   border-radius: 20px;
   height: 5px;
@@ -128,8 +132,14 @@ footer {
   margin-bottom: 50px;
 }
 
-.campaign_body img{
+
+
+.campaign_body .img-container {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-y:center;
   border-radius: 15px;
+  height: 350px;
   margin-bottom: 20px;
 }
 
@@ -142,12 +152,53 @@ footer {
   margin-top: 40px;
 }
 
-.padded-card{
-  padding-bottom: 50px;
-  padding-top: 50px;
+@keyframes skeleton {
+  0%{background-position:0% 92%}
+  50%{background-position:100% 9%}
+  100%{background-position:0% 92%}
 }
 
-.campaign_form{
+.skeleton {
+  background: linear-gradient(90deg,#f8f9fb,#e2e6f3,#f8f9fb,#e2e6f3);
+  -webkit-animation: skeleton 2s ease infinite;
+  animation: skeleton 2s ease infinite;
+  background-size: 300% 100%;
+}
+
+.skeleton.card {
+  border: 0px;
+  height: 350px;
+}
+
+.skeleton.bid-item-lg {
+  border-radius: 15px;
+  height: 350px;
+  width: 100%;
+}
+
+.skeleton.title {
+  height: 1.75rem;
+  margin-bottom: 15px;
+  margin-top: 40px;
+  width: 400px;
+}
+
+.skeleton.p1 {
+  height: 1.75rem;
+  margin-bottom: 10px;
+  margin-top: 20px;
+  width: 500px;
+}
+
+.skeleton.p2 {
+  height: 1.75rem;
+  margin-bottom: 10px;
+  width: 420px;
+}
+
+
+.padded-card{
+  padding: 20px
 }
 
 .newCampaignWrapper{
@@ -181,6 +232,24 @@ nav {
   background-color: #FFD422;
   border-radius: 50%;
   position: absolute;
+}
+
+.bid-state {
+  border-radius: 5px;
+  color: #fff;
+  display: inline-block;
+  font-size: 12px;
+  padding: 1px;
+  text-align: center;
+  width: 60px;
+}
+
+.bid-state.open {
+  background-color: #FFD422;
+}
+
+.bid-state.closed {
+  background-color: #676767;
 }
 
 .circle-lg {
@@ -289,3 +358,14 @@ span.price {
   display: flex;
   gap: 5px;
 }
+
+.price-caption {
+  font-size: 14px;
+}
+
+.price-tags {
+  display: flex;
+  justify-content: space-between;
+
+}
+
