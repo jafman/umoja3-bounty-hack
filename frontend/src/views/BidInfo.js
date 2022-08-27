@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import sneakers from '../assets/sneakers.webp';
 import PriceTag from "./components/price-tag";
 import BidState from "./components/bid-state";
+import BidPlaced from "./components/bid-placed";
 
 function BidInfo() {
   const [campaign, setCampaign] = useState(null);
@@ -12,6 +13,7 @@ function BidInfo() {
   const [imgSrc, setImgSrc] = useState('');
   const params = useParams();
   const bidState = 'open';
+  const [ bidPlaced, updateBidPlaced ] = useState(true);
   //const percentage = (Number(ca))+'%';
   //console.log('Cached Campaign:' + getCampaign(params.campaignId));
   useEffect(() => {
@@ -54,7 +56,7 @@ function BidInfo() {
               {campaign!==null && campaign.description}
             </p>
           </div>
-          { campaign!==null &&
+          { campaign!==null && !bidPlaced &&
             <div className="col-sm-4">
               <div className="card bid shadow-sm padded-card">
                 <div className="card-body">
@@ -70,6 +72,17 @@ function BidInfo() {
                 </div>
               </div>
             </div>
+          }
+
+          { !loading && bidPlaced &&
+            <div className="col-sm-4">
+              <BidPlaced state="lost"></BidPlaced>
+            </div>
+          }
+
+          {
+            !loading && bidPlaced && 
+            <div className='blur'></div>
           }
 
           { loading &&
