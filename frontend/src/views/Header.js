@@ -15,10 +15,9 @@ function Header(props) {
           props.showLinks === true && 
 
           <ul>
-            <li><Link to="/">How it works</Link></li>
-            <li><Link to="/">Logout</Link></li>
+            <li><Link to="/">Home</Link></li>
             <li>
-              <Link to="/campaign/new"><button type="button" className="btn btn-success">Auction an item</button></Link>
+              <Link to="/campaign/new"><button type="button" className="btn btn-primary">Auction an item</button></Link>
             </li>
           </ul>
 
