@@ -53,7 +53,7 @@ function Home() {
             </h2>
             <h5>Buy and sell valuable items at good rates.</h5>
             <Link to="/login" >
-              <button type="button" className="btn btn-lg btn-success" style={ {"marginTop": "50px"} }>Get Started</button>
+              <button type="button" className="btn btn-lg btn-primary" style={ {"marginTop": "50px"} }>Get Started</button>
             </Link> 
           </div>
           <div className='home right'>

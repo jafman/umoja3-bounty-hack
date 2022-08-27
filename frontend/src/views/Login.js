@@ -40,7 +40,7 @@ function Login() {
       <div className='login-modal shadow'>
         <img className='block hammer' src={hammer} width={60} />
         <span className='block welcome'>Welcome Back.</span>
-        <button type="button" className="btn btn-lg btn-success block" onClick={connetWallet} style={ {"marginTop": "20px"} }>
+        <button type="button" className="btn btn-lg btn-primary block" onClick={connetWallet} style={ {"marginTop": "20px"} }>
           Connect Wallet
         </button>
       </div>
