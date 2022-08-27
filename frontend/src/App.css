@@ -252,6 +252,10 @@ nav {
   background-color: #676767;
 }
 
+.muted {
+  color: #676767;
+}
+
 .circle-lg {
   height: 600px;
   width: 600px;
@@ -349,6 +353,18 @@ button.bid-item {
   position: relative;
 }
 
+.card-body.bidded {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.b-img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 span.price {
   font-size: 2em;
 }
@@ -367,5 +383,31 @@ span.price {
   display: flex;
   justify-content: space-between;
 
+}
+
+.blur {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  background-color: hsla(0,0%,84.7%,.1);
+  width: 100%;
+  z-index: 10;
+  -webkit-animation: fadeIn-data-v-a5a6ecac .3s;
+  animation: fadeIn-data-v-a5a6ecac .3s;
+}
+
+.bid-placed {
+  z-index: 100;
+}
+
+.btn-pay {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 200px;
 }
 
