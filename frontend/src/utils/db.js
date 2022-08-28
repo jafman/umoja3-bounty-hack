@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import firebaseConfig from "../config/firebase";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, doc, addDoc, getDocs, getDoc } from "firebase/firestore"; 
 import moment from 'moment';
 let campaignCache = {};
@@ -8,6 +9,7 @@ let campaignCache = {};
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const storage = getStorage(app);
 const collectionName = 'campaigns';
 const rnd = Math.floor(Math.random()*50000)+1;
 const IMG_URL = `https://picsum.photos/seed/${rnd}/300/150`;
@@ -83,4 +85,50 @@ const getCampaign = async (id) => {
   }
 }
 
-export { submitCampaign, getCampaigns, getCampaign };
+const  makeid = (length) => {
+  var result           = '';
+  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+    result += characters.charAt(Math.floor(Math.random() * 
+charactersLength));
+ }
+ return result;
+}
+
+const uploadImg = async (file, folder) => {
+  try {
+    const _path = folder+makeid(10);
+    const storageRef = ref(storage, _path);
+    const snapshot = await uploadBytes(storageRef, file);
+    const downloadUrl = await getDownloadURL(snapshot.ref);
+    // console.log('This file can be downloaded here:', downloadUrl);
+    return downloadUrl;
+  } catch (e) {
+    console.log('Error uploading image to firestore', e);
+    return false;
+  }
+}
+
+const createAuction = async (title, description, amount, imgUrl, contractAddress) => {
+  const now = moment().format('YYYY-MM-DD HH:mm:ss');
+  try { 
+    const docRef = await addDoc(collection(db, 'auctions'), {
+      title,
+      description,
+      amount: Number(amount),
+      created_at: now,
+      updated_at: now,
+      img_url: imgUrl,
+      contractAddress
+    });
+    //console.log("Document written with ID: ", docRef.id);
+    return true;
+
+  } catch (error) {
+    //console.error("Error adding document: ", error);
+    return false;
+  }
+}
+
+export { submitCampaign, getCampaigns, getCampaign, uploadImg, createAuction };
