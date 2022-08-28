@@ -1,15 +1,36 @@
-import coin from '../assets/coin.png'
+import bidImage from '../assets/image_bid.png'
 import Header from './Header'
-import Footer from './Footer';
-import Campaign from './components/campaign';
-import LazyLoadCampaign from './components/campaign_lazy';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getCampaigns } from '../utils/db';
+import { loadStdlib } from '@reach-sh/stdlib';
+import { ALGO_MyAlgoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
+
+const reach = loadStdlib('ALGO');
+reach.setWalletFallback(reach.walletFallback( { providerEnv: 'TestNet', MyAlgoConnect } ));
 
 function Home() {
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [ account, setAccount ] = useState({});
+  const [ address, setAddress ] = useState('');
+
+  const getAcc = async () => {
+    try {
+      const accountObj = await reach.getDefaultAccount();
+      console.log('ACCOUNT IS:', reach.formatAddress(accountObj))
+      setAccount(accountObj);
+      setAddress(reach.formatAddress(accountObj))
+    } catch (e) {
+      alert('Error getting account:', e)
+    }
+    
+  }
+
+  const showAcc = () => {
+    console.log('ACCUNT:', reach.formatAddress(account));
+    alert('ACC ADD:' + address);
+  }
 
   useEffect(() => {
     getCampaigns().then(campaigns => {
@@ -20,47 +41,35 @@ function Home() {
   }, []);
 
   return (
-    <div className="Landing">
+    <div className="landing">
       <Header/>
+      <div className='circle circle-lg circle-home'></div>
       <div className="top-wrapper">
         <div className="top-banner container">
           <div className='left'>
             <h2>
-              Give or Get Contribution<br/>
-              for a Project, Business, or Cause <br/>
-              using Crypto Currency.
+              That thing you treasure<br/>
+              is just one bid away.
             </h2>
-            <Link to="/campaign/new">
-              <button type="button" className="btn btn-lg btn-success">Start a Campaign</button>
+            <h5>Buy and sell valuable items at good rates.</h5>
+            <Link to="/login" >
+              <button type="button" className="btn btn-lg btn-primary" style={ {"marginTop": "50px"} }>Get Started</button>
             </Link> 
           </div>
-          <div className='right'>
-            <img height='300px' src={coin} />
+          <div className='home right'>
+            <img height='550px' src={bidImage} />
           </div>
         </div>
       </div>
+       
 
-      <div className="body container">
-        <h4>Latest Campaigns</h4>
-        <div className="row">
-
-          { loading && 
-            <>
-            <LazyLoadCampaign/>
-            <LazyLoadCampaign/>
-            <LazyLoadCampaign/> 
-            </>
-          }
-
-          { campaigns.map( (campaign) => (
+          {/* { campaigns.map( (campaign) => (
             <Campaign key={campaign.id} id={campaign.id} title={campaign.title} donated={campaign.donated} total={campaign.amount}
             body={campaign.description} img_url={campaign.img_url} />
             ))
-          }
+          } */}
 
-        </div>
-      </div>
-      <Footer/>
+      
     </div>
   );
 }

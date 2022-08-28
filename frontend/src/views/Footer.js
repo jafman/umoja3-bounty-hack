@@ -2,7 +2,7 @@
 function Footer() {
   return (
       <footer>
-        <div>Copyright 2022, W3FUND</div>
+        <div>Copyright 2022, Auction It.</div>
       </footer>
       
   );
