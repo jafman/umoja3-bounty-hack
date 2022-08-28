@@ -1,8 +1,18 @@
+import {loadStdlib} from '@reach-sh/stdlib';
+import { useContext } from 'react';
 import { useState } from 'react';
 import { createAuction, uploadImg } from '../utils/db';
 import uploadIcon from '../assets/upload.png';
 import hammer from '../assets/hammer.png';
-function CreateCampaign(){
+import { AccountContext } from '../context/account-context';
+import * as backend from '../reach_backend/build/index.main.mjs';
+import { ALGO_MyAlgoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
+
+const reach = loadStdlib('ALGO');
+reach.setWalletFallback(reach.walletFallback( { providerEnv: 'TestNet', MyAlgoConnect } ));
+
+function AuctionForm(){
+  const { account, ctc, handleCtcChange } = useContext(AccountContext);
   const [ title, setTitle ] = useState('');
   const [ description, setDescription ] = useState('');
   const [ amount, setAmount ] = useState('');
@@ -16,22 +26,27 @@ function CreateCampaign(){
     setProcessing(true);
     const imgUrl = await uploadImg(fileUpload, 'uploads/');
     let auction;
+    console.log('File uploading...')
     if(imgUrl){
-      // create contract
-      const contract = '0x66687y868hghgj'
-      auction = createAuction(title, description, amount, imgUrl, contract);
-    }
-
-    if(imgUrl && auction) {
-      setSuccess(true);
+      
+      const accountObj = await reach.getDefaultAccount();
+      const contract = accountObj.contract(backend);
+      handleCtcChange(contract);
+      
+      contract.getInfo().then(info => {
+        console.log(`The contract was deployed as: ${JSON.stringify(info)}`);
+        auction = createAuction(title, description, amount, imgUrl, JSON.stringify(info));
+        if(imgUrl && auction) {
+          setSuccess(true);
+        } else {
+          alert('Error creating auction')
+        }
+        setProcessing(false);
+        resetForm();
+      }) 
     } else {
-      alert('Error creating auction')
+      console.log('File upload failed.')
     }
-
-
-    
-    setProcessing(false);
-    resetForm();
   }
 
   function resetForm(){
@@ -133,5 +148,5 @@ function CreateCampaign(){
   );
 }
 
-export default CreateCampaign;
+export default AuctionForm;
 

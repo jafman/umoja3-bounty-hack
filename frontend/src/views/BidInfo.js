@@ -13,7 +13,7 @@ function BidInfo() {
   const [imgSrc, setImgSrc] = useState('');
   const params = useParams();
   const bidState = 'open';
-  const [ bidPlaced, updateBidPlaced ] = useState(true);
+  const [ bidPlaced, updateBidPlaced ] = useState(false);
   //const percentage = (Number(ca))+'%';
   //console.log('Cached Campaign:' + getCampaign(params.campaignId));
   useEffect(() => {
@@ -76,14 +76,14 @@ function BidInfo() {
 
           { !loading && bidPlaced &&
             <div className="col-sm-4">
-              <BidPlaced state="lost"></BidPlaced>
+              <BidPlaced state="new"></BidPlaced>
             </div>
           }
 
-          {
+          {/* {
             !loading && bidPlaced && 
             <div className='blur'></div>
-          }
+          } */}
 
           { loading &&
             <div className="col-sm-4">
