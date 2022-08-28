@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { AccountContext } from '../context/account-context';
 import hammer from '../assets/hammer.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { loadStdlib } from '@reach-sh/stdlib';
 import { ALGO_MyAlgoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
@@ -11,6 +11,7 @@ reach.setWalletFallback(reach.walletFallback( { providerEnv: 'TestNet', MyAlgoCo
 
 function Login() {
   const { account, address, handleAccountChange, handleAddressChange } = useContext(AccountContext);
+  const navigate = useNavigate();
 
   const connetWallet = async () => {
     try {
@@ -18,6 +19,7 @@ function Login() {
       console.log('ACCOUNT IS:', reach.formatAddress(accountObj))
       handleAccountChange(accountObj);
       handleAddressChange(reach.formatAddress(accountObj));
+      navigate('/auctions');
     } catch (e) {
       alert('Error getting account:', e)
     }
@@ -44,9 +46,6 @@ function Login() {
           Connect Wallet
         </button>
       </div>
-
-      <div style={ {"textAlign": "center", "marginTop": "10px"} }>{address}</div>
-       
     </div>
   );
 }
