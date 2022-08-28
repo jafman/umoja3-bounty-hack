@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import hammer from '../assets/hammer.png';
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo.png';
 import Header from './Header';
 import BidItem from './components/Item';
 import Footer from './Footer';
