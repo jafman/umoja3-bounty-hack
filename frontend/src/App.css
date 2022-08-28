@@ -101,6 +101,13 @@ nav li {
   width: 90%;
 }
 
+.card-sm {
+  left: calc(50% - 175px);
+  position: absolute;
+  top: 200px;
+  width: 350px;
+}
+
 .card.bid {
   height: 350px;
 }
@@ -201,15 +208,18 @@ footer {
   padding: 20px
 }
 
-.newCampaignWrapper{
+.newCampaignWrapper {
+  background-color: #fff;
+  border-radius: 10px;
   margin: auto;
   margin-bottom: 100px;
-  margin-top: 50px;
-  width: 50%;
+  margin-top: 30px;
+  padding: 20px;
+  width: 60%;
 }
 
 .spinner-border {
-  color: #25C266;
+  color: #161E81;
   margin-left: 20px;
 }
 
@@ -411,3 +421,18 @@ span.price {
   width: 200px;
 }
 
+.img-upload {
+  background-position-y:center;
+  background-size: cover;
+  border: 1px dashed #ced4da;
+  height: 230px;
+}
+
+
+.upload-label {
+  text-align: center;
+}
+
+.new-form-hd {
+  text-align: center;
+}
