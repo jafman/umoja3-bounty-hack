@@ -4,63 +4,42 @@ import firebaseConfig from "../config/firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, doc, addDoc, getDocs, getDoc } from "firebase/firestore"; 
 import moment from 'moment';
-let campaignCache = {};
+let auctionCache = {};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
-const collectionName = 'campaigns';
-const rnd = Math.floor(Math.random()*50000)+1;
-const IMG_URL = `https://picsum.photos/seed/${rnd}/300/150`;
+const collectionName = 'auctions';
 
-const submitCampaign = async (title, description, amount, deadline, created_by) => {
-  const now = moment().format('YYYY-MM-DD HH:mm:ss');
-  try {
-    const docRef = await addDoc(collection(db, collectionName), {
-      title,
-      description,
-      amount: Number(amount),
-      donated: 0,
-      deadline: moment(deadline).toDate(),
-      created_by,
-      created_at: now,
-      updated_at: now,
-      img_url: IMG_URL
-    });
-    //console.log("Document written with ID: ", docRef.id);
-    return true;
-
-  } catch (error) {
-    //console.error("Error adding document: ", error);
-    return false;
-  }
-}
-
-const getCampaigns = async () => {
+const getAuctions = async () => {
   const querySnapshot = await getDocs(collection(db, collectionName));
-  let campaigns = [];
-  let campaign = {};
+  let auctions = [];
+  let auction = {};
   querySnapshot.forEach((doc) => {
-    campaign = {
+    // title,
+    //   description,
+    //   amount: Number(amount),
+    //   created_at: now,
+    //   updated_at: now,
+    //   img_url: imgUrl,
+    //   contractAddress
+    auction = {
       id: doc.id,
       title: doc.data().title,
       description: doc.data().description,
-      amount: doc.data().amount,
-      donated: doc.data().donated,
-      deadline: doc.data().deadline,
-      created_by: doc.data().created_by,
+      startingBid: doc.data().amount,
       created_at: doc.data().created_at,
       updated_at: doc.data().updated_at,
-      img_url: doc.data().img_url
+      imgUrl: doc.data().img_url
     }
-    campaigns.push(campaign);
-    campaignCache[doc.id] = campaign;
+    auctions.push(auction);
+    auctionCache[doc.id] = auction;
   });
-  return campaigns;
+  return auctions;
 }
 
-const getCampaign = async (id) => {
+const getAuction = async (id) => {
   const docRef = doc(db, collectionName, id);
   const docSnap = await getDoc(docRef);
 
@@ -113,7 +92,7 @@ const uploadImg = async (file, folder) => {
 const createAuction = async (title, description, amount, imgUrl, contractAddress) => {
   const now = moment().format('YYYY-MM-DD HH:mm:ss');
   try { 
-    const docRef = await addDoc(collection(db, 'auctions'), {
+    const docRef = await addDoc(collection(db, collectionName), {
       title,
       description,
       amount: Number(amount),
@@ -131,4 +110,4 @@ const createAuction = async (title, description, amount, imgUrl, contractAddress
   }
 }
 
-export { submitCampaign, getCampaigns, getCampaign, uploadImg, createAuction };
+export { getAuctions, getAuction, uploadImg, createAuction };

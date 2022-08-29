@@ -1,15 +1,23 @@
 import { useContext } from 'react';
 import hammer from '../assets/hammer.png';
-import { Link } from 'react-router-dom';
 import Header from './Header';
 import BidItem from './components/Item';
 import Footer from './Footer';
 import sneakers from '../assets/sneakers.webp'
+import { getAuctions } from '../utils/db';
+import { useState, useEffect } from 'react';
 
 function Auctions() {
 
-  // useEffect(() => {
-  // }, []);
+  const [auctions, setAuctions] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getAuctions().then(auctions => {
+      setAuctions(auctions);
+      setLoading(false);
+    });
+  }, []);
 
   return (
     <div className="landing-auction">
@@ -22,12 +30,17 @@ function Auctions() {
       </div>
 
       <div className='row container bid-tems m-auto mt-5'>
-        <BidItem imgSrc={sneakers} available={true}></BidItem>
+        {/* <BidItem imgSrc={sneakers} available={true}></BidItem>
         <BidItem imgSrc={sneakers} available={true}></BidItem>
         <BidItem imgSrc={sneakers} available={true}></BidItem>
         <BidItem imgSrc={sneakers} available={false}></BidItem>
         <BidItem imgSrc={sneakers} available={true}></BidItem>
-        <BidItem imgSrc={sneakers} available={false}></BidItem>
+        <BidItem imgSrc={sneakers} available={false}></BidItem> */}
+        {
+          auctions.map( (auction) => (
+            <BidItem key={auction.id} auction={auction} available={true}></BidItem>
+          ))
+        }
       </div>
 
       <Footer></Footer>

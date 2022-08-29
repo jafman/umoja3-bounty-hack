@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { getCampaign } from '../utils/db';
+import { getAuction } from '../utils/db';
 import { useState, useEffect } from 'react';
 import sneakers from '../assets/sneakers.webp';
 import PriceTag from "./components/price-tag";
@@ -7,23 +7,24 @@ import BidState from "./components/bid-state";
 import BidPlaced from "./components/bid-placed";
 
 function BidInfo() {
-  const [campaign, setCampaign] = useState(null);
+  const [auction, setAuction] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [percentage, setPercentage] = useState('0%');
+  const [startingBid, setStartingBid] = useState('');
+  const [highestBid, setHighestBid] = useState('');
   const [imgSrc, setImgSrc] = useState('');
   const params = useParams();
   const bidState = 'open';
   const [ bidPlaced, updateBidPlaced ] = useState(false);
-  //const percentage = (Number(ca))+'%';
-  //console.log('Cached Campaign:' + getCampaign(params.campaignId));
+  
   useEffect(() => {
-    getCampaign(params.itemId).then(campaign => {
-      setCampaign(campaign);
+    getAuction(params.itemId).then(auction => {
+      setAuction(auction);
+      setStartingBid(auction.amount);
+      setHighestBid(auction.amount);
       setLoading(false);
-      //console.log(campaign);
-      if(campaign !== null) {
-        setPercentage((campaign.donated/campaign.amount)*100+'%');
-        setImgSrc(campaign.img_url);
+      console.log(auction);
+      if(auction !== null) {
+        setImgSrc(auction.img_url);
       }
     });
   }, []);
@@ -33,16 +34,16 @@ function BidInfo() {
         { loading && 
           <div className="skeleton title"></div>
         }
-        { campaign!==null &&  <h3>{campaign.title}</h3> }
-        {campaign===null && !loading && <h3>Item Not Found!</h3>}
+        { auction!==null &&  <h3>{auction.title}</h3> }
+        {auction===null && !loading && <h3>Item Not Found!</h3>}
         <div className="row">
 
           <div className="col-sm-8">
             { loading && 
               <div className="skeleton bid-item-lg"></div>
             }
-            { campaign!==null && 
-              <div className="img-container" style={{"backgroundImage":`url(${sneakers})`}}></div>
+            { auction!==null && 
+              <div className="img-container" style={{"backgroundImage":`url(${imgSrc})`}}></div>
             }
 
             { loading && 
@@ -53,18 +54,18 @@ function BidInfo() {
             }
 
             <p>
-              {campaign!==null && campaign.description}
+              {auction!==null && auction.description}
             </p>
           </div>
-          { campaign!==null && !bidPlaced &&
+          { auction!==null && !bidPlaced &&
             <div className="col-sm-4">
               <div className="card bid shadow-sm padded-card">
                 <div className="card-body">
                   <BidState state={bidState}></BidState>
                   <div className="mb-3"></div>
                   <div className="price-tags mb-5">
-                    <PriceTag caption='Starting Bid' price='3'></PriceTag>
-                    <PriceTag caption='Highest Bid' price='4'></PriceTag>
+                    <PriceTag caption='Starting Bid' price={startingBid}></PriceTag>
+                    <PriceTag caption='Highest Bid' price={highestBid}></PriceTag>
                   </div>
                   
                   <input className="form-control mb-4" placeholder="Amount" type="number" />
