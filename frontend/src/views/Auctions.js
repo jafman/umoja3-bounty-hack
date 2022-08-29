@@ -3,7 +3,6 @@ import hammer from '../assets/hammer.png';
 import Header from './Header';
 import BidItem from './components/Item';
 import Footer from './Footer';
-import sneakers from '../assets/sneakers.webp'
 import { getAuctions } from '../utils/db';
 import { useState, useEffect } from 'react';
 
@@ -28,7 +27,7 @@ function Auctions() {
         <h1 className='light'>Awesome Deals</h1>
         <img src={hammer} width={100} />
       </div>
-
+      
       <div className='row container bid-tems m-auto mt-5'>
         {/* <BidItem imgSrc={sneakers} available={true}></BidItem>
         <BidItem imgSrc={sneakers} available={true}></BidItem>
@@ -40,6 +39,11 @@ function Auctions() {
           auctions.map( (auction) => (
             <BidItem key={auction.id} auction={auction} available={true}></BidItem>
           ))
+        }
+        { loading &&
+           
+            <div className="skeleton bid-item col-sm-4"></div>
+           
         }
       </div>
 

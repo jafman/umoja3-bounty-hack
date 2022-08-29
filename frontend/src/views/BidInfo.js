@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import { getAuction } from '../utils/db';
 import { useState, useEffect } from 'react';
-import sneakers from '../assets/sneakers.webp';
 import PriceTag from "./components/price-tag";
 import BidState from "./components/bid-state";
 import BidPlaced from "./components/bid-placed";
