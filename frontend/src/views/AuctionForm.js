@@ -20,7 +20,7 @@ reach.setWalletFallback(reach.walletFallback( { providerEnv: 'TestNet', MyAlgoCo
 
 function AuctionForm(){
   const navigate = useNavigate();
-  const { account, ctc, handleCtcChange, handleAddressChange } = useContext(AccountContext);
+  const { account } = useContext(AccountContext);
   const [ title, setTitle ] = useState('');
   const [ description, setDescription ] = useState('');
   const [ amount, setAmount ] = useState('');
