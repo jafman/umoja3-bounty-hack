@@ -50,12 +50,10 @@ const getAuction = async (id) => {
       title: docSnap.data().title,
       description: docSnap.data().description,
       amount: docSnap.data().amount,
-      donated: docSnap.data().donated,
-      deadline: docSnap.data().deadline,
-      created_by: docSnap.data().created_by,
       created_at: docSnap.data().created_at,
       updated_at: docSnap.data().updated_at,
-      img_url: docSnap.data().img_url
+      img_url: docSnap.data().img_url,
+      contractAddress: docSnap.data().contractAddress
     };
   } else {
     // doc.data() will be undefined in this case

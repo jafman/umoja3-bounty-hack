@@ -7,6 +7,7 @@ import BidPlaced from "./components/bid-placed";
 
 function BidInfo() {
   const [auction, setAuction] = useState(null);
+  const [contractInfo, setContractInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [startingBid, setStartingBid] = useState('');
   const [highestBid, setHighestBid] = useState('');
@@ -20,6 +21,7 @@ function BidInfo() {
       setAuction(auction);
       setStartingBid(auction.amount);
       setHighestBid(auction.amount);
+      setContractInfo(JSON.parse(auction.contractAddress));
       setLoading(false);
       console.log(auction);
       if(auction !== null) {
