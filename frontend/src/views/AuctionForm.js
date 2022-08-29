@@ -8,11 +8,16 @@ import { AccountContext } from '../context/account-context';
 import * as backend from '../reach_backend/build/index.main.mjs';
 import { ALGO_MyAlgoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
 
+
+if(window.algorand) {
+  console.log('Now deleting old window object.')
+  delete window.algorand
+}
 const reach = loadStdlib('ALGO');
 reach.setWalletFallback(reach.walletFallback( { providerEnv: 'TestNet', MyAlgoConnect } ));
 
 function AuctionForm(){
-  const { account, ctc, handleCtcChange } = useContext(AccountContext);
+  const { account, ctc, handleCtcChange, handleAddressChange } = useContext(AccountContext);
   const [ title, setTitle ] = useState('');
   const [ description, setDescription ] = useState('');
   const [ amount, setAmount ] = useState('');
@@ -27,26 +32,53 @@ function AuctionForm(){
     const imgUrl = await uploadImg(fileUpload, 'uploads/');
     let auction;
     console.log('File uploading...')
+    let contract
     if(imgUrl){
-      
-      const accountObj = await reach.getDefaultAccount();
-      const contract = accountObj.contract(backend);
-      handleCtcChange(contract);
-      
-      contract.getInfo().then(info => {
-        console.log(`The contract was deployed as: ${JSON.stringify(info)}`);
-        auction = createAuction(title, description, amount, imgUrl, JSON.stringify(info));
-        if(imgUrl && auction) {
-          setSuccess(true);
-        } else {
-          alert('Error creating auction')
-        }
-        setProcessing(false);
-        resetForm();
-      }) 
+      try {
+        const accountObj = await reach.getDefaultAccount();
+        console.log('Account-:', accountObj.networkAccount.addr)
+        // reach.parseCurrency(10)
+        // const accountObj = await reach.newTestAccount(reach.parseCurrency(0.1));
+        contract = accountObj.contract(backend);
+        console.log('Contract-:', contract)
+        // handleCtcChange(contract);
+        // handleAddressChange(reach.formatAddress(accountObj));
+        contract.getInfo().then(info => {
+          console.log(`The contract was deployed as: ${JSON.stringify(info)}`);
+          auction = createAuction(title, description, amount, imgUrl, JSON.stringify(info));
+          if(imgUrl && auction) {
+            setSuccess(true);
+          } else {
+            alert('Error creating auction')
+          }
+          setProcessing(false);
+          resetForm();
+          })
+        } catch (e) {
+          console.error('Fatal error:', e)
+        } 
     } else {
-      console.log('File upload failed.')
+        console.log('File upload failed.')
     }
+
+    //
+    if(imgUrl){
+      const interact = {
+        showOutcome: (address) => {
+          console.log(`Auctioneer saw [${reach.formatAddress(address)}] win.`)
+        }
+      }
+
+      interact.getAuctionInfo = () => {
+        return { itemName:title, startingBid: Number(amount)  }
+      }
+
+      console.log('Auctioneer is about to publish');
+      await backend.Auctioneer(contract, interact);
+    }
+
+    
+    
   }
 
   function resetForm(){
