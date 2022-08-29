@@ -28,6 +28,8 @@ function BidInfo() {
   const [ bidPlaced, updateBidPlaced ] = useState(false);
   const bidBtnRef = useRef(null);
   const inputRef = useRef(null);
+
+  const hexToDecimal = (hex) => parseInt(hex, 16); 
   
   useEffect(() => {
     console.log(bidBtnRef.current)
@@ -43,33 +45,34 @@ function BidInfo() {
       setHighestBid(auction.amount);
       setContractInfo(JSON.parse(auction.contractAddress));
       setLoading(false);
-      console.log(auction);
+      // console.log(auction);
       if(auction !== null) {
         setImgSrc(auction.img_url);
       }
 
       // set the interact
       if(auction) {
+        console.log('Setting up to connect to contract ...')
         let contract;
         const interact = {
           showOutcome: (address) => {
+            updateBidPlaced(true);
             if(reach.addressEq(address, account)){
-              alert('You won the bid.')
+              console.log('You won the bid.')
               setOutcome('won')
             } else {
-              alert('You lost the bid.')
+              console.log('You lost the bid.')
               setOutcome('lost')
             }
           }
         }
 
         interact.placeBid = async (highestBid) => {
-          // const amount = await ask(`The current highest bid is ${highestBid} ALGO. How much are you willing to pay?`, 
-          //   (x) => x
-          // );
-          // return amount;
-          alert('place bid')
-          setHighestBid(highestBid);
+          
+          alert('you may now place bid...')
+
+          setHighestBid(hexToDecimal(highestBid._hex));
+          console.log('Highest Bid is', highestBid);
           let waitForPressResolve;
 
           const  waitForPress = () => {
@@ -82,15 +85,26 @@ function BidInfo() {
 
           bidBtnRef.current.addEventListener('click', btnResolver);
           await waitForPress();
-          bidBtnRef.removeEventListener('click', btnResolver);
+          bidBtnRef.current.removeEventListener('click', btnResolver);
           const bidAmount = inputRef.current.value;
-          alert('You have place bid')
+          console.log('You have place bid');
+          alert('Your bid was place successfully.');
           return Number(bidAmount);
         }
 
         (async () => {
-          contract = account.contract(backend, contractInfo);
-          await backend.Bidder(contract, interact);
+          try {
+            console.log('Now connecting to contract...')
+            const _contractInfo = JSON.parse(auction.contractAddress);
+            console.log('Contract Info', _contractInfo)
+            contract = account.contract(backend, _contractInfo);
+            console.log('Now awaiting backend bidder...')
+            await backend.Bidder(contract, interact);
+            console.log('backend bidder is set....')
+          } catch (e) {
+            console.error('Error connecting to contract:', e)
+          }
+          
         })()
         
 
