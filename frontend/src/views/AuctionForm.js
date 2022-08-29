@@ -1,23 +1,26 @@
 import {loadStdlib} from '@reach-sh/stdlib';
 import { useContext } from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createAuction, uploadImg } from '../utils/db';
 import uploadIcon from '../assets/upload.png';
 import hammer from '../assets/hammer.png';
 import { AccountContext } from '../context/account-context';
 import * as backend from '../reach_backend/build/index.main.mjs';
 import { ALGO_MyAlgoConnect as MyAlgoConnect } from '@reach-sh/stdlib';
+import { useNavigate } from 'react-router-dom';
 
 
-if(window.algorand) {
-  console.log('Now deleting old window object.')
-  delete window.algorand
-}
+// if(window.algorand) {
+//   console.log('Now deleting old window object.')
+//   delete window.algorand
+// }
+
 const reach = loadStdlib('ALGO');
 reach.setWalletFallback(reach.walletFallback( { providerEnv: 'TestNet', MyAlgoConnect } ));
 
 function AuctionForm(){
-  const { account, ctc, handleCtcChange, handleAddressChange } = useContext(AccountContext);
+  const navigate = useNavigate();
+  const { account } = useContext(AccountContext);
   const [ title, setTitle ] = useState('');
   const [ description, setDescription ] = useState('');
   const [ amount, setAmount ] = useState('');
@@ -25,6 +28,12 @@ function AuctionForm(){
   const [ success, setSuccess ] = useState(false);
   const [ fileUpload, setFileUpload ] = useState('');
   const [ imgSrc, setImgSrc ] = useState('');
+
+  useEffect(() => {
+    if(!account){
+      navigate('/login');
+    }
+  }, []);
 
   async function handleSubmit(e){
     e.preventDefault();
@@ -35,14 +44,7 @@ function AuctionForm(){
     let contract
     if(imgUrl){
       try {
-        const accountObj = await reach.getDefaultAccount();
-        console.log('Account-:', accountObj.networkAccount.addr)
-        // reach.parseCurrency(10)
-        // const accountObj = await reach.newTestAccount(reach.parseCurrency(0.1));
-        contract = accountObj.contract(backend);
-        console.log('Contract-:', contract)
-        // handleCtcChange(contract);
-        // handleAddressChange(reach.formatAddress(accountObj));
+        contract = account.contract(backend);
         contract.getInfo().then(info => {
           console.log(`The contract was deployed as: ${JSON.stringify(info)}`);
           auction = createAuction(title, description, amount, imgUrl, JSON.stringify(info));

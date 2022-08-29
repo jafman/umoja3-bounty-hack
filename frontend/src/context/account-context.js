@@ -11,7 +11,7 @@ export const AccountContext = createContext({
 
 const AccountProvider = ({ children }) => {
   const [ address, setAddress ] = useState('');
-  const [ account, setAccount ] = useState({});
+  const [ account, setAccount ] = useState(null);
   const [ ctc, setCtc ] = useState(null);
 
   const handleAddressChange = (address) => {

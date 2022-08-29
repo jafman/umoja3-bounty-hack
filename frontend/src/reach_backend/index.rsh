@@ -69,7 +69,7 @@ export const main = Reach.App(() => {
           return [ bidCount < 4, winner, newHighestBid, bidCount + 1 ]
 
         }))
-       .timeout(relativeTime(100), () => {
+       .timeout(relativeTime(30), () => {
          Anybody.publish();
          return [ false, bidWinner, highestBid, bidCount]
        });

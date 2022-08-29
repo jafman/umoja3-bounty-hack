@@ -16,7 +16,7 @@ function BidPlaced(props) {
       break;
     case 'won':
       imgSrc = congrats;
-      msg = 'Congratulations, you won this bid, please pay.';
+      msg = 'Congratulations, you won this bid.';
       break;
     default: 
       imgSrc = hammer;
@@ -29,8 +29,8 @@ function BidPlaced(props) {
         <h5>{msg}</h5>
         <div className='muted mb-4'>Thank You.</div>
         {
-          props.state === 'won' &&
-          <button className='btn btn-primary btn-pay'>Pay</button>
+          // props.state === 'won' &&
+          // <button className='btn btn-primary btn-pay'>Pay</button>
         }
       </div>
     </div>
